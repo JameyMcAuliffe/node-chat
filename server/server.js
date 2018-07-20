@@ -20,14 +20,19 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
 	console.log('New user connected');
 
-	socket.emit('newMessage', {
-		from: 'Server',
-		text: 'so much server',
-		createdAt: Date.now()
-	});
+	// socket.emit('newMessage', {
+	// 	from: 'Server',
+	// 	text: 'so much server',
+	// 	createdAt: new Date().geTime()
+	// });
 
 	socket.on('createMessage', (message) => {
-		console.log('Created Message: ', message);
+		//emits a signal to every connection
+		io.emit('newMessage', {
+			from: message.from,
+			text: message.text,
+			createdAt: new Date().getTime()
+		});
 	});
 
 	socket.on('disconnect', () => {
