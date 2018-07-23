@@ -12,9 +12,23 @@ socket.on('disconnect', function() {
 //custom event, receives message object from emitted event in server.js
 socket.on('newMessage', function(message) {
 	console.log('New Message: ', message);
+	let li = jQuery('<li></li>');
+	li.text(`${message.from}: ${message.text}`);
+
+	jQuery('#messages').append(li);
 });
 
+jQuery('#message-form').on('submit', function(e) {
+	//prevents page from refreshing on submit
+	e.preventDefault();
 
+	socket.emit('createMessage', {
+		from: 'User',
+		text: jQuery('[name=message]').val()
+	}, function() {
+
+	});
+});
 
 
 

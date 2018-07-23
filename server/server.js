@@ -26,9 +26,11 @@ io.on('connection', (socket) => {
 
 	socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
-	socket.on('createMessage', (message) => {
+	socket.on('createMessage', (message, callback) => {
 		//emits a signal to every connection
 		io.emit('newMessage', generateMessage(message.from, message.text));
+		//callback is the acknowledged callback from emitted event
+		callback('This is from the server');
 
 		// emits message to everyone but the sender 
 		// socket.broadcast.emit('newMessage', {
