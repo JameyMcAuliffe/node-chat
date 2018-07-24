@@ -3,7 +3,7 @@ const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
 
-const {generateMessage} = require('./utils/message');
+const {generateMessage, generateLocation} = require('./utils/message');
 
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
@@ -17,8 +17,7 @@ let io = socketIO(server)
 //Middleware
 app.use(express.static(publicPath));
 
-//register event listener
-//event type is 1st arg
+
 io.on('connection', (socket) => {
 	console.log('New user connected');
 
@@ -31,13 +30,10 @@ io.on('connection', (socket) => {
 		io.emit('newMessage', generateMessage(message.from, message.text));
 		//callback is the acknowledged callback from emitted event
 		callback('This is from the server');
+	});
 
-		// emits message to everyone but the sender 
-		// socket.broadcast.emit('newMessage', {
-		// 	from: message.from,
-		// 	text: message.text,
-		// 	createdAt: new Date().getTime()
-		// });
+	socket.on('createLocationMessage', (coords) => {
+		io.emit('newLocationMessage', generateLocation('User', coords.latitude, coords.longitude));
 	});
 
 	socket.on('disconnect', () => {
