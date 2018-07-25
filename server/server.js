@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
 		//emits a signal to every connection
 		io.emit('newMessage', generateMessage(message.from, message.text));
 		//callback is the acknowledged callback from emitted event
-		callback('This is from the server');
+		callback();
 	});
 
 	socket.on('createLocationMessage', (coords) => {
