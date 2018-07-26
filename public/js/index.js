@@ -11,18 +11,22 @@ socket.on('disconnect', function() {
 
 //custom event, receives message object from emitted event in server.js
 socket.on('newMessage', function(message) {
+	let formattedTime = moment(message.createdAt).format('h:mm a');
 	let li = $('<li></li>');
-	li.text(`${message.from}: ${message.text}`);
+
+	li.text(`${message.from} ${formattedTime}: ${message.text}`);
 
 	$('#messages').append(li);
 });
 
 socket.on('newLocationMessage', function(message) {
+	let formattedTime = moment(message.createdAt).format('h:mm a');
 	let li = $('<li></li>');
-	//target_blank tells broswer to open in a new tab
-	let a = $('<a target="_blank" >My Current Location</a>');
 	
-	li.text(`${message.from}: `);
+	//target_blank tells broswer to open in a new tab
+	let a = $('<a target="_blank">My Current Location</a>');
+	
+	li.text(`${message.from} ${formattedTime}: `);
 	a.attr('href', message.url);
 	li.append(a);
 	$('#messages').append(li);
