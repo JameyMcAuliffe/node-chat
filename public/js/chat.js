@@ -38,6 +38,16 @@ socket.on('disconnect', function() {
 	console.log('Disconnected from server');
 });
 
+socket.on('updateUserList', function(users) {
+	let ol = $('<ol></ol>');
+
+	users.forEach(function(user) {
+		ol.append($('<li></li>').text(user));
+
+		$('#users').html(ol);
+	});
+});
+
 //custom event, receives message object from emitted event in server.js
 socket.on('newMessage', function(message) {
 	//html method returns the markup inside message-template
