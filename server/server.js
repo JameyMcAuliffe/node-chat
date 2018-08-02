@@ -44,14 +44,22 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('createMessage', (message, callback) => {
-		//emits a signal to every connection
-		io.emit('newMessage', generateMessage(message.from, message.text));
+		let user = users.getUser(socket.id);
+
+		if(user && isRealString(message.text)) {
+			//emits a signal to every connection
+			io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+		}
 		//callback is the acknowledged callback from emitted event
 		callback();
 	});
 
 	socket.on('createLocationMessage', (coords) => {
-		io.emit('newLocationMessage', generateLocation('User', coords.latitude, coords.longitude));
+		let user = users.getUser(socket.id);
+
+		if(user) {
+			io.to(user.room).emit('newLocationMessage', generateLocation(user.name, coords.latitude, coords.longitude));		
+		}
 	});
 
 	socket.on('disconnect', () => {
