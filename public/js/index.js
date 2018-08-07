@@ -6,8 +6,10 @@ socket.on('connect', () => {
 	socket.on('loadRooms', function(rooms) {
 		
 		rooms.forEach(function(room) {
-			$('#room-select').append($('<option></option>').text(room.toUpperCase()));
+			$('#room-select').append($('<option></option>').text(room.toUpperCase()).attr('value', `${room}`));
 		});
 	});
 });
 
+
+			

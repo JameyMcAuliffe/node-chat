@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
 	socket.emit('loadRooms', rooms.getRooms());
 
 	socket.on('join', (params, callback) => {
-		let room = params.room.toLowerCase();
+		let room = params.room_select.toLowerCase() || params.room_input.toLowerCase();
 
 		if (!isRealString(params.name) || !isRealString(room)) {
 			return callback('Name and room name are required');
