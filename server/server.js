@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
 
 		//only emits to specific room
 		io.to(room).emit('updateUserList', users.getUserList(room));
-		socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app!'));
+		socket.emit('newMessage', generateMessage('Admin', `WELCOME TO THE ${room.toUpperCase()} ROOM`));
 		socket.broadcast.to(room).emit('newMessage', generateMessage('Admin', `User ${params.name} has joined.`));
 
 		callback();
