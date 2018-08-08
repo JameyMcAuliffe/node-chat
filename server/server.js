@@ -3,10 +3,11 @@ const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
 
-const {generateMessage, generateLocation} = require('./utils/message');
+const {generateMessage, generateLocation, generateGif} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
 const {Users} = require('./utils/users');
 const {Rooms} = require('./utils/rooms');
+const {getGif} = require('./utils/giphy');
 
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
@@ -21,7 +22,6 @@ let rooms = new Rooms();
 
 //Middleware
 app.use(express.static(publicPath));
-
 
 io.on('connection', (socket) => {
 	socket.emit('loadRooms', rooms.getRooms());
@@ -67,6 +67,22 @@ io.on('connection', (socket) => {
 		}
 		//callback is the acknowledged callback from emitted event
 		callback();
+	});
+
+	socket.on('createGifMessage', (message) => {
+		let user = users.getUser(socket.id);
+
+		if(user && isRealString(message.query)) {
+			getGif(message.query)
+			.then((response) => {
+				let url = response;
+				console.log('url: ', url );
+				io.to(user.room).emit('newGifMessage', generateGif(user.name, url));
+			})
+			.catch((err) => {
+				console.log(err);
+			})
+		}
 	});
 
 	socket.on('createLocationMessage', (coords) => {

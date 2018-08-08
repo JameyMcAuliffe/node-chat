@@ -20,9 +20,9 @@
 		<div class="chat__footer">
 			<form id="message-form">
 				<input name="message" type="text" placeholder="Message" autofocus autocomplete="off"/>
-				<button>Send</button>
+				<button id="send-message">Send</button>
 			</form>
-			<button id="send-location">Send Location</button>
+			<button id="search-giphy">Giphy Search</button>
 		</div>
 	</div>
 
@@ -38,14 +38,14 @@
 		</li>
 	</script>
 
-	<script id="location-message-template" type="text/template">
+	<script id="gif-message-template" type="text/template">
 		<li class="message">
 			<div class="message__title">
 				<h4>{{from}}:</h4>
 				<span>{{createdAt}}</span>
 			</div>
 			<div class="message__body">
-				<p><a href="{{url}}" target="_blank">My Current Location</a></p>
+				<img src="{{url}}">
 			</div>
 		</li>
 	</script>

@@ -69,9 +69,9 @@ socket.on('newMessage', function(message) {
 	// $('#messages').append(li);
 });
 
-socket.on('newLocationMessage', function(message) {
+socket.on('newGifMessage', function(message) {
 	let formattedTime = moment(message.createdAt).format('h:mm a');
-	let template = $('#location-message-template').html();
+	let template = $('#gif-message-template').html();
 	let html = Mustache.render(template, {
 		url: message.url,
 		from: message.from,
@@ -97,35 +97,48 @@ $('#message-form').on('submit', function(e) {
 	e.preventDefault();
 
 	let messageTextbox = $('[name=message]')
-
-	socket.emit('createMessage', {
-		text: messageTextbox.val()
-	}, function() {
-		messageTextbox.val('');
-	});
-});
-
-let locationButton = $('#send-location');
-locationButton.on('click', function() {
-	//make sure browser has access to geolcation api
-	if(!navigator.geolocation) {
-		return alert('Geolocation not supported by your browser');
-	}
-
-	locationButton.attr('disabled', 'disabled').text('Sending Location...');
-
-	navigator.geolocation.getCurrentPosition(function(position) {
-		locationButton.removeAttr('disabled').text('Send Location');
-
-		socket.emit('createLocationMessage', {
-			latitude: position.coords.latitude,
-			longitude: position.coords.longitude
+	
+	if(!e.originalEvent) {
+		console.log('gipfy');
+		socket.emit('createGifMessage', {
+			query: messageTextbox.val()
+		}), function() {
+			messageTextbox.val('');
+		}
+	} else {
+		socket.emit('createMessage', {
+			text: messageTextbox.val()
+		}, function() {
+			messageTextbox.val('');
 		});
-	}, function() {
-		alert('Unable to fetch location');
-		locationButton.removeAttr('disabled').text('Send Location');
-	});
+	}
 });
+
+$('#search-giphy').click(function() {
+	$('#message-form').submit()
+});
+
+// let locationButton = $('#send-location');
+// locationButton.on('click', function() {
+// 	//make sure browser has access to geolcation api
+// 	if(!navigator.geolocation) {
+// 		return alert('Geolocation not supported by your browser');
+// 	}
+
+// 	locationButton.attr('disabled', 'disabled').text('Sending Location...');
+
+// 	navigator.geolocation.getCurrentPosition(function(position) {
+// 		locationButton.removeAttr('disabled').text('Send Location');
+
+// 		socket.emit('createLocationMessage', {
+// 			latitude: position.coords.latitude,
+// 			longitude: position.coords.longitude
+// 		});
+// 	}, function() {
+// 		alert('Unable to fetch location');
+// 		locationButton.removeAttr('disabled').text('Send Location');
+// 	});
+// });
 
 
 
