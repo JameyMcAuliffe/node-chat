@@ -76,20 +76,11 @@ io.on('connection', (socket) => {
 			getGif(message.query)
 			.then((response) => {
 				let url = response;
-				console.log('url: ', url );
 				io.to(user.room).emit('newGifMessage', generateGif(user.name, url));
 			})
 			.catch((err) => {
 				console.log(err);
 			})
-		}
-	});
-
-	socket.on('createLocationMessage', (coords) => {
-		let user = users.getUser(socket.id);
-
-		if(user) {
-			io.to(user.room).emit('newLocationMessage', generateLocation(user.name, coords.latitude, coords.longitude));		
 		}
 	});
 
@@ -114,3 +105,13 @@ io.on('connection', (socket) => {
 server.listen(port, () => {
 	console.log(`Listening on port ${port}`);
 });
+
+
+
+	// socket.on('createLocationMessage', (coords) => {
+	// 	let user = users.getUser(socket.id);
+
+	// 	if(user) {
+	// 		io.to(user.room).emit('newLocationMessage', generateLocation(user.name, coords.latitude, coords.longitude));		
+	// 	}
+	// });

@@ -70,6 +70,7 @@ socket.on('newMessage', function(message) {
 });
 
 socket.on('newGifMessage', function(message) {
+
 	let formattedTime = moment(message.createdAt).format('h:mm a');
 	let template = $('#gif-message-template').html();
 	let html = Mustache.render(template, {
@@ -80,16 +81,6 @@ socket.on('newGifMessage', function(message) {
 
 	$('#messages').append(html);
 	scrollToBottom();
-
-	//let li = $('<li></li>');
-
-	//target_blank tells broswer to open in a new tab
-	// let a = $('<a target="_blank">My Current Location</a>');
-	
-	// li.text(`${message.from} ${formattedTime}: `);
-	// a.attr('href', message.url);
-	// li.append(a);
-	// $('#messages').append(li);
 });
 
 $('#message-form').on('submit', function(e) {
@@ -99,7 +90,6 @@ $('#message-form').on('submit', function(e) {
 	let messageTextbox = $('[name=message]')
 	
 	if(!e.originalEvent) {
-		console.log('gipfy');
 		socket.emit('createGifMessage', {
 			query: messageTextbox.val()
 		}), function() {
@@ -117,6 +107,8 @@ $('#message-form').on('submit', function(e) {
 $('#search-giphy').click(function() {
 	$('#message-form').submit()
 });
+
+
 
 // let locationButton = $('#send-location');
 // locationButton.on('click', function() {

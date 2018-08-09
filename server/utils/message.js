@@ -18,12 +18,13 @@ let generateGif = (from, url) => {
 	}
 };
 
-let generateLocation = (from, lat, long) => {
-	return {
-		from,
-		url: `https://www.google.com/maps?q=${lat},${long}`,
-		createdAt: moment().valueOf()
-	};
-};
 
-module.exports = {generateMessage, generateLocation, generateGif};
+module.exports = {generateMessage, generateGif};
+
+// let generateLocation = (from, lat, long) => {
+// 	return {
+// 		from,
+// 		url: `https://www.google.com/maps?q=${lat},${long}`,
+// 		createdAt: moment().valueOf()
+// 	};
+// };
