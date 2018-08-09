@@ -201,4 +201,8 @@ button:disabled {
   .chat__footer button {
     margin-right: 0px;
   }
+
+  .gif_message {
+    max-width: 300px;
+  }
 }

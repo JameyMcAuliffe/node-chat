@@ -7,7 +7,7 @@ let getGif = (searchString) => {
 
 	return axios.get(giphyUrl)
 		.then((response) => {
-			let gifUrl = response.data.data.images.fixed_width.url;
+			let gifUrl = response.data.data.images.original.url;
 			console.log('Success: ', response.data.data.images.fixed_width.url);
 			return gifUrl;
 		})

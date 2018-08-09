@@ -61,12 +61,6 @@ socket.on('newMessage', function(message) {
 
 	$('#messages').append(html);
 	scrollToBottom();
-
-	// let li = $('<li></li>');
-
-	// li.text(`${message.from} ${formattedTime}: ${message.text}`);
-
-	// $('#messages').append(li);
 });
 
 socket.on('newGifMessage', function(message) {
