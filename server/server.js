@@ -35,6 +35,7 @@ io.on('connection', (socket) => {
 
 		users.getUserList(room).map((user) => {
 			if(user === params.name) {
+				users.removeUser(socket.id);
 				return callback('Name already exists, please choose another');
 			}
 		});
