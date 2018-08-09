@@ -92,9 +92,9 @@ $('#message-form').on('submit', function(e) {
 	if(!e.originalEvent) {
 		socket.emit('createGifMessage', {
 			query: messageTextbox.val()
-		}), function() {
+		}, function() {
 			messageTextbox.val('');
-		}
+		});
 	} else {
 		socket.emit('createMessage', {
 			text: messageTextbox.val()

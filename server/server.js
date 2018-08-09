@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
 		callback();
 	});
 
-	socket.on('createGifMessage', (message) => {
+	socket.on('createGifMessage', (message, callback) => {
 		let user = users.getUser(socket.id);
 
 		if(user && isRealString(message.query)) {
@@ -82,6 +82,7 @@ io.on('connection', (socket) => {
 				console.log(err);
 			})
 		}
+		callback();
 	});
 
 	socket.on('disconnect', () => {

@@ -1,6 +1,6 @@
 const expect = require('expect');
 
-const {generateMessage, generateLocation} = require('./message');
+const {generateMessage, generateGif} = require('./message');
 
 describe('generateMessage', () => {
 	it('should generate the correct message object', () => {
@@ -13,15 +13,26 @@ describe('generateMessage', () => {
 	});
 });
 
-describe('generateLocation', () => {
-	it('should generate correct location object', () => {
+describe('generateGif', () => {
+	it('should generate the correct message object', () => {
 		let from = 'Test';
-		let lat = 34;
-		let long = -21;
-		let url = `https://www.google.com/maps?q=${lat},${long}`
-		let message = generateLocation(from, lat, long);
+		let url = 'https://someUrl.com';
+		let message = generateGif(from, url);
 
 		expect(message).toInclude({from, url});
 		expect(message.createdAt).toBeA('number');
-	});
+	})
 });
+
+// describe('generateLocation', () => {
+// 	it('should generate correct location object', () => {
+// 		let from = 'Test';
+// 		let lat = 34;
+// 		let long = -21;
+// 		let url = `https://www.google.com/maps?q=${lat},${long}`
+// 		let message = generateLocation(from, lat, long);
+
+// 		expect(message).toInclude({from, url});
+// 		expect(message.createdAt).toBeA('number');
+// 	});
+// });
