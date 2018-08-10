@@ -27,11 +27,16 @@ io.on('connection', (socket) => {
 	socket.emit('loadRooms', rooms.getRooms());
 
 	socket.on('join', (params, callback) => {
-		let room = params.room_select.toLowerCase() || params.room_input.toLowerCase();
-
+		let roomSelect = params.room_select.toLowerCase();
+		let roomInput = params.room_input.toLowerCase();
+		let room = roomSelect || roomInput;
 		if (!isRealString(params.name) || !isRealString(room)) {
 			return callback('Name and room name are required');
 		} 
+
+		if(isRealString(roomSelect) && isRealString(roomInput)) {
+			return callback('Either select a room or create one');
+		}
 
 		let roomCheck = () => {
 			//add room if it isn't already in the array
