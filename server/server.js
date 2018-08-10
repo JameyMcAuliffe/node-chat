@@ -33,28 +33,37 @@ io.on('connection', (socket) => {
 			return callback('Name and room name are required');
 		} 
 
-		users.getUserList(room).map((user) => {
-			if(user === params.name) {
-				users.removeUser(socket.id);
-				return callback('Name already exists, please choose another');
+		let roomCheck = () => {
+			//add room if it isn't already in the array
+			if(!rooms.getRooms().includes(room)) {
+				rooms.addRoom(room);
 			}
-		});
-
-		//socket.join takes a string
-		socket.join(room);
-		//remove user from any previous rooms before adding to new one
-		users.removeUser(socket.id);
-		users.addUser(socket.id, params.name, room);
-		
-		if(!rooms.getRooms().includes(room)) {
-			rooms.addRoom(room);
+			console.log('Rooms:', rooms.getRooms());
 		}
-		console.log('Rooms:', rooms.getRooms());
 
-		//only emits to specific room
-		io.to(room).emit('updateUserList', users.getUserList(room));
-		socket.emit('newMessage', generateMessage('Admin', `WELCOME TO THE ${room.toUpperCase()} ROOM`));
-		socket.broadcast.to(room).emit('newMessage', generateMessage('Admin', `User ${params.name} has joined.`));
+		let joinRoom = () => {
+			//socket.join takes a string
+			socket.join(room);
+			//remove user from any previous rooms before adding to new one
+			users.removeUser(socket.id);
+			users.addUser(socket.id, params.name, room);
+
+			roomCheck();
+
+			//only emits to specific room
+			io.to(room).emit('updateUserList', users.getUserList(room));
+			socket.emit('newMessage', generateMessage('Admin', `WELCOME TO THE ${room.toUpperCase()} ROOM`));
+			socket.broadcast.to(room).emit('newMessage', generateMessage('Admin', `User ${params.name} has joined.`));
+		};
+
+		//check to see if user name already exists in room
+		if(users.getUserList(room).includes(params.name)) {
+			//prevent duplicate rooms getting added to select at index.html
+			roomCheck();
+			return callback('Name already exists, please choose another');
+		} else {
+			joinRoom();
+		}
 
 		callback();
 	});
